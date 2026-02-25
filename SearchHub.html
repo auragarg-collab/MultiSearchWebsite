@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="google-site-verification" content="MDXBhQWCwZ5A4UyAeehFN-_AwlVtrsg5EoVfE4NkZyk" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchHub | Organize Your Discovery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px;
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-input {
+            background: transparent;
+            border: none;
+            color: white;
+            flex-grow: 1;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-btn {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 210, 255, 0.4);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border-color: transparent;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .engine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .engine-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .engine-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00d2ff;
+            box-shadow: 0 10px 40px rgba(0, 210, 255, 0.2);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .engine-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 60px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .search-container { flex-direction: column; border-radius: 20px; }
+            .search-btn { width: 100%; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🔍 SearchHub</h1>
+        <p class="subtitle">Organize your search across all platforms</p>
+        
+        <div class="search-container">
+            <input type="text" id="mainInput" class="search-input" placeholder="Search anything...">
+            <button class="search-btn" onclick="performSearch()">Search</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="setEngine('google', this)">🌐 Web</button>
+        <button class="tab-btn" onclick="setEngine('images', this)">🖼️ Images</button>
+        <button class="tab-btn" onclick="setEngine('video', this)">🎬 Videos</button>
+        <button class="tab-btn" onclick="setEngine('news', this)">📰 News</button>
+    </div>
+
+    <h2>Quick Access</h2>
+
+    <div class="engine-grid">
+        <div class="engine-card" onclick="quickLink('https://www.google.com')">
+            <span class="icon">🔍</span>
+            <span class="engine-name">Google</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.bing.com')">
+            <span class="icon">🌐</span>
+            <span class="engine-name">Bing</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://duckduckgo.com')">
+            <span class="icon">🦆</span>
+            <span class="engine-name">DuckDuckGo</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.youtube.com')">
+            <span class="icon">▶️</span>
+            <span class="engine-name">YouTube</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.reddit.com')">
+            <span class="icon">🤖</span>
+            <span class="engine-name">Reddit</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://github.com')">
+            <span class="icon">💻</span>
+            <span class="engine-name">GitHub</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.wikipedia.org')">
+            <span class="icon">📚</span>
+            <span class="engine-name">Wikipedia</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://scholar.google.com')">
+            <span class="icon">🎓</span>
+            <span class="engine-name">Google Scholar</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.amazon.com')">
+            <span class="icon">🛒</span>
+            <span class="engine-name">Amazon</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://twitter.com')">
+            <span class="icon">🐦</span>
+            <span class="engine-name">Twitter</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.linkedin.com')">
+            <span class="icon">💼</span>
+            <span class="engine-name">LinkedIn</span>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://stackoverflow.com')">
+            <span class="icon">❓</span>
+            <span class="engine-name">Stack Overflow</span>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with ❤️ | SearchHub</p>
+    </footer>
+
+    <script>
+        let currentSearchEngine = 'google';
+        
+        const searchUrls = {
+            'google': 'https://www.google.com/search?q=',
+            'images': 'https://www.google.com/search?tbm=isch&q=',
+            'video': 'https://www.google.com/search?tbm=vid&q=',
+            'news': 'https://www.google.com/search?tbm=nws&q='
+        };
+
+        const placeholders = {
+            'google': 'Search the web...',
+            'images': 'Search for images...',
+            'video': 'Search for videos...',
+            'news': 'Search latest news...'
+        };
+
+        document.getElementById("mainInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                performSearch();
+            }
+        });
+
+        function setEngine(engine, element) {
+            currentSearchEngine = engine;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            document.getElementById('mainInput').placeholder = placeholders[engine];
+        }
+
+        function performSearch() {
+            const query = document.getElementById('mainInput').value;
+            if (!query) return;
+            const finalUrl = searchUrls[currentSearchEngine] + encodeURIComponent(query);
+            window.open(finalUrl, '_blank');
+        }
+
+        function quickLink(url) {
+            window.open(url, '_blank');
+        }
+    </script>
+
+</body>
+
+</html>
