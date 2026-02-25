@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" 	content="MDXBhQWCwZ5A4UyAeehFN-_AwlVtrsg5EoVfE4NkZyk" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchHub | Organize Your Discovery</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --dark: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-mute: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #818cf8;
+            text-shadow: 0 0 20px rgba(129, 140, 248, 0.5);
+        }
+
+        .search-container {
+            display: flex;
+            background: var(--card-bg);
+            padding: 0.5rem;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            border: 1px solid #334155;
+        }
+
+        .search-input {
+            background: transparent;
+            border: none;
+            color: white;
+            flex-grow: 1;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.1s;
+        }
+
+        .search-btn:active {
+            transform: scale(0.95);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--text-mute);
+            color: var(--text-mute);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .engine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .engine-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .engine-card:hover {
+            transform: translateY(-5px);
+            background-color: #2d3a52;
+            border-color: var(--primary);
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .engine-name {
+            font-weight: 600;
+        }
+
+        #custom-alert {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🔍 SearchHub</h1>
+        
+        <div class="search-container">
+            <input type="text" id="mainInput" class="search-input" placeholder="Search the web...">
+            <button class="search-btn" onclick="performSearch()">Search</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="setEngine('google', this)">All Web</button>
+        <button class="tab-btn" onclick="setEngine('images', this)">Images</button>
+        <button class="tab-btn" onclick="setEngine('video', this)">Videos</button>
+        <button class="tab-btn" onclick="setEngine('news', this)">News</button>
+    </div>
+
+    <div class="engine-grid">
+        
+        <div class="engine-card" onclick="quickLink('https://www.google.com')">
+            <div class="icon">🔍</div>
+            <div class="engine-name">Google</div>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.bing.com')">
+            <div class="icon">🌐</div>
+            <div class="engine-name">Bing</div>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://duckduckgo.com')">
+            <div class="icon">🦆</div>
+            <div class="engine-name">DuckDuckGo</div>
+        </div>
+        
+        <div class="engine-card" onclick="quickLink('https://www.youtube.com')">
+            <div class="icon">▶️</div>
+            <div class="engine-name">YouTube</div>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://www.reddit.com')">
+            <div class="icon">🤖</div>
+            <div class="engine-name">Reddit</div>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://github.com')">
+            <div class="icon">💻</div>
+            <div class="engine-name">GitHub</div>
+        </div>
+
+        <!-- Knowledge -->
+        <div class="engine-card" onclick="quickLink('https://www.wikipedia.org')">
+            <div class="icon">📚</div>
+            <div class="engine-name">Wikipedia</div>
+        </div>
+        <div class="engine-card" onclick="quickLink('https://scholar.google.com')">
+            <div class="icon">🎓</div>
+            <div class="engine-name">Scholar</div>
+        </div>
+    </div>
+
+    <div id="custom-alert">Opening Search Engine...</div>
+
+    <script>
+        // Configuration for search URLs
+        let currentSearchEngine = 'google'; 
+        
+        // Mapping engine codes to URLs
+        const searchUrls = {
+            'google': 'https://www.google.com/search?q=',
+            'images': 'https://www.google.com/search?tbm=isch&q=',
+            'video': 'https://www.google.com/search?tbm=vid&q=',
+            'news': 'https://www.google.com/search?tbm=nws&q='
+        };
+
+        // Handle Enter Key
+        document.getElementById("mainInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                performSearch();
+            }
+        });
+
+        // Function to change the active category tab
+        function setEngine(engine, element) {
+            currentSearchEngine = engine;
+            
+            // Update UI classes
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            // Update placeholder text
+            const placeholders = {
+                'google': 'Search the web...',
+                'images': 'Find images...',
+                'video': 'Find videos...',
+                'news': 'Find latest news...'
+            };
+            document.getElementById('mainInput').placeholder = placeholders[engine];
+        }
+
+        // Perform the search based on input
+        function performSearch() {
+            const query = document.getElementById('mainInput').value;
+            if (!query) return;
+
+            const baseUrl = searchUrls[currentSearchEngine];
+            const finalUrl = baseUrl + encodeURIComponent(query);
+            
+            window.open(finalUrl, '_blank');
+        }
+
+        // Quick link functionality (Direct click to site)
+        function quickLink(url) {
+            window.open(url, '_blank');
+        }
+
+    </script>
+</body>
+</html>
